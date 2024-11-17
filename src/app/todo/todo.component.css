@@ -1,0 +1,44 @@
+.todo-container {
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.add-todo {
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  width: 70%;
+  padding: 8px;
+  margin-right: 5px;
+}
+
+button {
+  padding: 8px;
+  margin-left: 5px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.done {
+  text-decoration: line-through;
+}
+
+.green-text {
+  color: green;
+}
+
+
+
+
