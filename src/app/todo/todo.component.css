@@ -4,19 +4,23 @@
   text-align: center;
 }
 
-.add-todo {
-  margin-bottom: 10px;
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 input[type="text"] {
-  width: 70%;
+  flex-grow: 1;
   padding: 8px;
   margin-right: 5px;
 }
 
 button {
-  padding: 8px;
-  margin-left: 5px;
+  padding: 5px 10px;
+  width: 100px;
+  height: 35px;
 }
 
 ul {
@@ -25,10 +29,13 @@ ul {
 }
 
 li {
+  margin-bottom: 10px;
+}
+
+.task-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
 }
 
 .done {
@@ -39,6 +46,12 @@ li {
   color: green;
 }
 
-
-
-
+#einkaufliste-container {
+  width: 300px;
+  margin: auto;
+  padding: 20px;
+  border: 3px solid #4CAF50;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19); /* Eleganter grauer Schatten */
+  text-align: center;
+}
