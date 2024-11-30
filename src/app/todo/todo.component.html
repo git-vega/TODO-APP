@@ -6,11 +6,12 @@
       <button (click)="addTodo()">Hinzufügen</button>
     </div>
     <ul>
-      <li *ngFor="let todo of todos; let i = index">
+      <li *ngFor="let todo of todos$ | async; let i = index">
         <div class="task-container">
-          <input type="checkbox" [(ngModel)]="todo.done" (change)="toggleDone(i)" />
+          <!-- Checkbox ohne ngModel, nur change Event -->
+          <input type="checkbox" [checked]="todo.done" (change)="toggleDone(todo.id!, todo.done)" />
           <span [class.done]="todo.done">{{ todo.task }}</span>
-          <button (click)="removeTodo(i)">Löschen</button>
+          <button (click)="removeTodo(todo.id!)">Löschen</button>
         </div>
       </li>
     </ul>

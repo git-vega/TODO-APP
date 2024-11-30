@@ -9,5 +9,6 @@ import { TodoComponent } from './todo/todo.component'; // Stellen Sie sicher, da
   imports: [TodoComponent] // TodoComponent muss hier importiert werden
 })
 export class AppComponent {
+
   //title = 'Einkaufswagen';
 }

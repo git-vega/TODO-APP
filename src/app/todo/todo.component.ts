@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Firestore, collection, addDoc, collectionData, deleteDoc, doc, updateDoc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-todo',
@@ -11,35 +13,42 @@ import { CommonModule } from '@angular/common';
 })
 export class TodoComponent {
   newTodo: string = '';
-  todos: { task: string, done: boolean }[] = [];
+  todos$: Observable<{ id?: string; task: string; done: boolean }[]>;
 
-  ngOnInit() {
-    // Laden der Todos aus LocalStorage
-    const savedTodos = localStorage.getItem('todos'); // prüfen ob todos im LocalStorage vorhanden sind
-    if(savedTodos){
-      this.todos = JSON.parse(savedTodos);  // Lädt die gespeicherten Produkte in die Liste
-    }
+  constructor(private firestore: Firestore) {
+    const todosCollection = collection(this.firestore, 'todos');
+    this.todos$ = collectionData(todosCollection, { idField: 'id' }) as Observable<{ id?: string; task: string; done: boolean }[]>;
   }
 
   addTodo() {
     if (this.newTodo.trim()) {
-      this.todos.push({ task: this.newTodo, done: false });
-      this.newTodo = '';
-      this.saveTodosToLocalStorage();
+      const todosCollection = collection(this.firestore, 'todos');
+      const todo = { task: this.newTodo, done: false };
+      addDoc(todosCollection, todo).then(() => {
+        this.newTodo = '';
+      });
     }
   }
 
-  removeTodo(index: number) {
-    this.todos.splice(index, 1);
-    this.saveTodosToLocalStorage();
+  removeTodo(todoId: string) {
+    const todoDoc = doc(this.firestore, `todos/${todoId}`);
+    deleteDoc(todoDoc)
+    .then(() => {
+      console.log(`Todo mit ID ${todoId} wurde erfolgreich gelöscht.`);
+    })
+    .catch(error => {
+      console.error(`Fehler beim Löschen des Todos mit ID ${todoId}:`, error);
+    });
   }
 
-  toggleDone(index: number) {
-    this.todos[index].done = !this.todos[index].done;
-  }
-
-  // Methode zum Speichern in LocalStorage
-  saveTodosToLocalStorage() {
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+  toggleDone(todoId: string, done: boolean) {
+    const todoDoc = doc(this.firestore, `todos/${todoId}`);
+    updateDoc(todoDoc, { done: !done })
+    .then(() => {
+      console.log(`Todo mit ID ${todoId} wurde erfolgreich aktualisiert. Neuer Status: ${!done}`);
+    })
+    .catch(error => {
+      console.error(`Fehler beim Aktualisieren des Todos mit ID ${todoId}:`, error);
+    });
   }
 }
